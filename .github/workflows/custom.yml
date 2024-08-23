@@ -38,26 +38,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-name: GraalVM Gate
+name: Custom build
 
 on:
-#  push:
-#    branches:
-#      - 'master'
-#      - 'release/**'
-#    paths-ignore:
-#      - '.devcontainer/**'
-#      - '.github/workflows/quarkus.yml'
-#      - '**.md'
-#      - '**.jsonnet'
-#      - '**.libjsonnet'
-#  pull_request:
-#    paths-ignore:
-#      - '.devcontainer/**'
-#      - '.github/workflows/quarkus.yml'
-#      - '**.md'
-#      - '**.jsonnet'
-#      - '**.libjsonnet'
+  push:
+    branches:
+      - 'master'
+      - 'release/**'
+    paths-ignore:
+      - '.devcontainer/**'
+      - '.github/workflows/quarkus.yml'
+      - '**.md'
+      - '**.jsonnet'
+      - '**.libjsonnet'
+  pull_request:
+    paths-ignore:
+      - '.devcontainer/**'
+      - '.github/workflows/quarkus.yml'
+      - '**.md'
+      - '**.jsonnet'
+      - '**.libjsonnet'
   # Enable manual dispatch of the workflow
   # see https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow
   workflow_dispatch:
@@ -97,50 +97,50 @@ jobs:
       matrix:
         include:
           # /compiler
-          - env:
-              JDK_VERSION: "21"
-              GATE_TAGS: "style,fullbuild,test"
-              PRIMARY: "compiler"
-          - env:
-              JDK_VERSION: "latest"
-              GATE_TAGS: "build,bootstraplite"
-              PRIMARY: "compiler"
+#          - env:
+#              JDK_VERSION: "21"
+#              GATE_TAGS: "style,fullbuild,test"
+#              PRIMARY: "compiler"
+#          - env:
+#              JDK_VERSION: "latest"
+#              GATE_TAGS: "build,bootstraplite"
+#              PRIMARY: "compiler"
           # /espresso
-          - env:
-              JDK_VERSION: "21"
-              GATE_TAGS: "style,fullbuild"
-              PRIMARY: "espresso"
+#          - env:
+#              JDK_VERSION: "21"
+#              GATE_TAGS: "style,fullbuild"
+#              PRIMARY: "espresso"
           # /substratevm
-          - env:
-              JDK_VERSION: "21"
-              GATE_TAGS: "style,fullbuild"
-              PRIMARY: "substratevm"
-          - env:
-              JDK_VERSION: "latest"
-              GATE_TAGS: "build,helloworld,native_unittests"
-              PRIMARY: "substratevm"
-              PIP_PACKAGES: "jsonschema==4.6.1"
-          - env:
-              JDK_VERSION: "latest"
-              GATE_TAGS: "build,debuginfotest"
-              PRIMARY: "substratevm"
-          - env:
-              JDK_VERSION: "latest"
-              GATE_TAGS: "hellomodule"
-              PRIMARY: "substratevm"
+#          - env:
+#              JDK_VERSION: "21"
+#              GATE_TAGS: "style,fullbuild"
+#              PRIMARY: "substratevm"
+#          - env:
+#              JDK_VERSION: "latest"
+#              GATE_TAGS: "build,helloworld,native_unittests"
+#              PRIMARY: "substratevm"
+#              PIP_PACKAGES: "jsonschema==4.6.1"
+#          - env:
+#              JDK_VERSION: "latest"
+#              GATE_TAGS: "build,debuginfotest"
+#              PRIMARY: "substratevm"
+#          - env:
+#              JDK_VERSION: "latest"
+#              GATE_TAGS: "hellomodule"
+#              PRIMARY: "substratevm"
           # /sulong
-          - env:
-              JDK_VERSION: "21"
-              GATE_TAGS: "style,fullbuild,sulongBasic"
-              PRIMARY: "sulong"
+#          - env:
+#              JDK_VERSION: "21"
+#              GATE_TAGS: "style,fullbuild,sulongBasic"
+#              PRIMARY: "sulong"
           # /truffle
-          - env:
-              JDK_VERSION: "21"
-              GATE_TAGS: "" # Truffle does not use tags
-              PRIMARY: "truffle"
+#          - env:
+#              JDK_VERSION: "21"
+#              GATE_TAGS: "" # Truffle does not use tags
+#              PRIMARY: "truffle"
           # /vm
           - env:
-              JDK_VERSION: "latest"
+              JDK_VERSION: "21"
               GATE_TAGS: "build,sulong"
               GATE_OPTS: "--no-warning-as-error"
               PRIMARY: "vm"
@@ -148,14 +148,23 @@ jobs:
               NATIVE_IMAGES: "graalvm-native-binutil,graalvm-native-clang,graalvm-native-clang-cl,graalvm-native-clang++,graalvm-native-ld,lib:llvmvm"
               DISABLE_POLYGLOT: true
               DISABLE_LIBPOLYGLOT: true
-          - env:
-              JDK_VERSION: "latest"
-              GATE_TAGS: "build"
-              GATE_OPTS: "--no-warning-as-error"
-              PRIMARY: "vm"
-              DYNAMIC_IMPORTS: "/tools,/substratevm,/sulong"
-              NATIVE_IMAGES: "lib:jvmcicompiler,native-image,lib:native-image-agent,lib:native-image-diagnostics-agent,polyglot"
-              WITHOUT_VCS: true
+#          - env:
+#              JDK_VERSION: "latest"
+#              GATE_TAGS: "build,sulong"
+#              GATE_OPTS: "--no-warning-as-error"
+#              PRIMARY: "vm"
+#              DYNAMIC_IMPORTS: "/sulong,/substratevm"
+#              NATIVE_IMAGES: "graalvm-native-binutil,graalvm-native-clang,graalvm-native-clang-cl,graalvm-native-clang++,graalvm-native-ld,lib:llvmvm"
+#              DISABLE_POLYGLOT: true
+#              DISABLE_LIBPOLYGLOT: true
+#          - env:
+#              JDK_VERSION: "latest"
+#              GATE_TAGS: "build"
+#              GATE_OPTS: "--no-warning-as-error"
+#              PRIMARY: "vm"
+#              DYNAMIC_IMPORTS: "/tools,/substratevm,/sulong"
+#              NATIVE_IMAGES: "lib:jvmcicompiler,native-image,lib:native-image-agent,lib:native-image-diagnostics-agent,polyglot"
+#              WITHOUT_VCS: true
     env:
       JDT: builtin # Compile with ECJ (and javac) as part of gate runs tagged with 'fullbuild'
       MX_RUNS_DEBUG: ${{ contains(matrix.env.GATE_TAGS, 'debug') || matrix.env.GATE_TAGS == '' }}
@@ -222,6 +231,10 @@ jobs:
     - name: Build GraalVM and run gate without tags
       env: ${{ matrix.env }}
       run: ${MX_PATH}/mx --primary-suite-path ${PRIMARY} --java-home=${JAVA_HOME} gate --strict-mode ${{ matrix.env.GATE_OPTS }}
+      if: ${{ matrix.env.GATE_TAGS == '' }}
+    - name: Display built Graal VM home
+      env: ${{ matrix.env }}
+      run: ${MX_PATH}/mx --primary-suite-path ${PRIMARY} --java-home=${JAVA_HOME} gate --strict-mode ${{ matrix.env.GATE_OPTS }} --tags ${GATE_TAGS} graalvm-home
       if: ${{ matrix.env.GATE_TAGS == '' }}
 #  build-graalvm-windows:
 #    name: /substratevm on Windows
