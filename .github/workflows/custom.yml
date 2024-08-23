@@ -234,8 +234,8 @@ jobs:
       if: ${{ matrix.env.GATE_TAGS == '' }}
     - name: Display built Graal VM home
       env: ${{ matrix.env }}
-      run: ${MX_PATH}/mx --primary-suite-path ${PRIMARY} --java-home=${JAVA_HOME} gate --strict-mode ${{ matrix.env.GATE_OPTS }} --tags ${GATE_TAGS} graalvm-home
-      if: ${{ matrix.env.GATE_TAGS == '' }}
+      run: ${MX_PATH}/mx --primary-suite-path ${PRIMARY} --java-home=${JAVA_HOME} graalvm-show
+      if: ${{ matrix.env.GATE_TAGS != '' }}
 #  build-graalvm-windows:
 #    name: /substratevm on Windows
 #    runs-on: windows-2022
